@@ -10,33 +10,32 @@ function div(a, b) {
 
 const cont = document.querySelector(".container");
 const btnContainer = document.querySelector(".btn-container");
+const btns = [
+  "7",
+  "8",
+  "9",
+  "/",
+  "undo",
+  "clear",
+  "4",
+  "5",
+  "6",
+  "*",
+  "(",
+  ")",
+  "1",
+  "2",
+  "3",
+  "-",
+  "x²",
+  "sqrt",
+  "0",
+  ",",
+  "%",
+  "+",
+  "=",
+];
 function createbtns() {
-  const btns = [
-    "7",
-    "8",
-    "9",
-    "/",
-    "undo",
-    "clear",
-    "4",
-    "5",
-    "6",
-    "*",
-    "(",
-    ")",
-    "1",
-    "2",
-    "3",
-    "-",
-    "x²",
-    "sqrt",
-    "0",
-    ",",
-    "%",
-    "+",
-    "=",
-  ];
-
   const buttons = btns.map((btntext) => {
     const btn = document.createElement("div");
 
@@ -74,3 +73,63 @@ function createbtns() {
 }
 
 createbtns();
+
+const screen = document.querySelector("#screen");
+btnContainer.addEventListener("click", (e) => {
+  const target = e.target;
+  if (target.classList.contains("btn")) {
+    if (target.classList.contains("equal")) {
+      const result = eval(screen.value);
+      screen.value = result;
+    } else if (target.classList.contains("undo")) {
+      screen.value = screen.value.slice(0, -1);
+    } else if (target.classList.contains("clear")) {
+      screen.value = "0";
+    } else if (target.classList.contains("sqrt")) {
+      screen.value = Math.sqrt(screen.value);
+    } else if (target.classList.contains("xsquare")) {
+      screen.value = Math.pow(screen.value, 2);
+    } else {
+      if (screen.value === "0") {
+        screen.value = "";
+      }
+      screen.value += target.textContent;
+    }
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  const target = e.key;
+  switch (target) {
+    case "=":
+      screen.value = eval(screen.value);
+
+      break;
+    case "Enter":
+      screen.value = eval(screen.value);
+      break;
+    case "Backspace":
+      screen.value = screen.value.slice(0, -1);
+      break;
+    case "Escape":
+      screen.value = "0";
+      break;
+    case "c":
+      screen.value = "0";
+      break;
+    case "s":
+      screen.value = Math.sqrt(screen.value).toString();
+      break;
+    case "x":
+      screen.value = Math.pow(screen.value, 2).toString();
+      break;
+    default:
+      if ("0123456789xcs+-/*".includes(target)) {
+        if (screen.value === "0") {
+          screen.value = "";
+        }
+        screen.value += target;
+      }
+      break;
+  }
+});
